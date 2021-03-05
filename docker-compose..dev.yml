@@ -1,0 +1,46 @@
+version: '3'
+services:
+    nginx:
+        build: ./nginx
+        depends_on:
+            - server
+        ports:
+             - 1337:80
+        volumes:
+            - 'static_volumes:/nginx/static'
+            - 'media_volumes:/server/media'
+
+
+    server:
+        build:
+            context: ./
+            dockerfile: ./server/Dockerfile
+        command: >
+            sh -c "
+             python manage.py migrate &&
+             gunicorn server.wsgi:application --bind 0.0.0.0:8000"
+        volumes:
+            - 'static_volumes:/server/static'
+            - 'media_volumes:/server/media'
+        expose:
+            - 8000
+        depends_on:
+            - db
+        environment:
+            DEBUG: 'False'
+            DATABASE_URL: 'postgres://postgres:@db:5432/postgres'
+            BROKER_URL: 'amqp://user:password@rabbitmq:5672/my_vhost'
+
+    db:
+        image: postgres:11.2
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_USER: postgres
+    redis:
+        container_name: redis_manga
+        image: redis:5.0.3
+
+volumes:
+      static_volumes:
+      media_volumes:
+

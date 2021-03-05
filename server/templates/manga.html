@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block manga %}
+
+    <div class="container-xl pt-3">
+        <div class="row">
+
+            <div class="col p-0" style="margin-bottom: 10px">
+                <div class="card">
+                    <div class="row" style="padding: 5px">
+                        <div style="width: 100%; padding: 5px; margin-left: 20px">
+                            <div>
+                                <h><b>{{ manga.title }}</b></h>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-lg-5 text-center">
+
+                            <img src="/media/{{ manga.poster }}"
+                                 class="card-img-top"
+                                 style="padding: 10px"
+                                 alt="...">
+                        </div>
+                        <div class="col-md-7 col-lg-7">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <div><b>Тип:</b> {{ manga.type_manga }}</div>
+
+                                <div><b>Автор:</b>
+                                    {% for author in manga.author.all %}
+                                        <a href="{{author.get_absolute_urls }}">{{ author.name}}</a>
+
+                                    {% endfor %}
+                                </div>
+                                <div><b>Художник: </b>
+                                    {% for painter in manga.painter.all %}
+                                        <a href="{{ painter.get_absolute_urls }}">{{ painter.name}}</a>
+
+                                    {% endfor %}
+                                </div>
+                                <div><b>Издатель:</b>
+                                    {% for publisher in manga.publisher.all %}
+                                        <a href="{{ publisher.get_absolute_urls }}">{{ publisher.name}}</a>
+
+                                    {% endfor %}
+                                    </div>
+                                <div><b>Загружено глав:</b> 144</div>
+                                <div><b>Статус:</b></div>
+                                <div><b>Жанр:</b>
+                                    {% for genres in manga.genres.all %}
+                                        {{ genres.name}}
+                                    {% endfor %}
+
+                                </div>
+                                <div><b>Год:</b> {{ manga.year }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Basic example" style="padding: 10px;  ">
+                        <button type="button" class="btn btn-primary " style=" min-height:50px">Начать читать</button>
+                        <button type="button" class="btn btn-primary">Читать последнюю главу</button>
+                    </div>
+                    <div style="padding: 20px">
+                        {{ manga.description }}
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 p-0">
+                <div class="card">
+                    <div>
+                        В разработке
+                    </div>
+                </div>
+            </div>
+            <div class=" card col-xl-8 p-0 mt-2">
+                <div class="p-2">Главы</div>
+
+                <ul class="list-group list-group-flush">
+                    {% for chapter in chapters %}
+                        <li href="" type="" class="list-group-item font-weight-bold">Том 1
+                            Глава {{ chapter.number }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {#        <div style="height: 250px">Реклама</div>#}
+        {#    <div class="card col-xl-8">Комментарии (44)</div>#}
+
+        {## TODO: нужно подумать как  лучше передавать id#}
+        <script>
+            function showMessage(id ={{ manga.id }}) {
+                let text = localStorage.getItem('recently_viewed');
+                if (text != null) {
+                    let myList = text.split([',']);
+                    myList.unshift(String(id))
+                    localStorage.setItem('recently_viewed', [...(new Set(myList))].slice(0, 20));
+
+                } else {
+                    localStorage.setItem('recently_viewed', id);
+
+                }
+
+            }
+
+            showMessage();
+
+
+        </script>
+    </div>
+
+{% endblock %}

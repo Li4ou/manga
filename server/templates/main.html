@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+    <div class="container-xl">
+        <div class="row">
+            <div class="col-md-8 w-100 mb-3 mt-3">
+                <div class=" card card-body mb-3" style="background-color:#fff;">
+                    <div class="p-2"><b>Популярные</b></div>
+                    <div>
+                        <div class="px-2">
+                            <div class="hot-media-wrap">
+                                {% for manga in manga_top %}
+                                    <div class="hot-media-item media-card-wrap media-card-wrap_sm m-1 "
+                                         style="width: 150px;height: 230px">
+                                        <a href="" title="" class="">
+                                            <div style="height: 200px; position: relative">
+                                                <img src="/media/{{ manga.poster }}" class=""
+                                                     style="height: 200px;position: absolute"
+                                                     alt="...">
+                                                <div  class="pl-2 m-0" style="position: absolute; color: white;bottom: 0;">
+                                                    <h5  class="mb-0"> {{ manga.get_type_display }}</h5>
+                                                    <h5> Глава 1</h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="{{ manga.get_absolute_urls }}">
+                                            <div class="w-100 text-center test"
+                                                 style=""> {{ manga.title }}
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card card-body mb-3">
+                    <div class="p-2"><b>Последние обновления</b></div>
+                    <div class="px-2">
+                        <div class="hot-media-wrap">
+                            {% for chapter in chapter_updates %}
+                                <div class="hot-media-item media-card-wrap media-card-wrap_sm m-1 "
+                                     style="width: 150px">
+                                    <a href="" title="" class="">
+                                        <img src="/media/{{ chapter.manga.image }}" class=""#}
+                                             style="height: 200px"
+                                             alt="...">
+                                        <div class="w-100 text-center test"> {{ chapter.manga.name_ru }}
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="card card-body mb-3 trw">
+                    <div class="p-2"><b>Горячие новинки</b></div>
+                    <div>
+                        <div class="px-2">
+                            <div class="hot-media-wrap">
+                                {% for manga in manga_hot %}
+                                    <div class="hot-media-item media-card-wrap media-card-wrap_sm m-1 "
+                                         style="width: 150px">
+                                        <a href="" title="" class="">
+                                            <img src="/media/{{ manga.poster }}" class=""#}
+                                                 style="height: 200px"
+                                                 alt="...">
+                                            <div class="w-100 text-center test"> {{ manga.title }}
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div id="mangaInterest">
+                    {#                  #}
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="col mt-3" style="background-color:#fff;" ;></div>
+
+    </div>
+
+
+    </div>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="{% static 'js/b.js' %}"></script>
+{% endblock %}

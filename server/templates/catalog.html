@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block catalog %}
+    <div class="container-xl">
+        <div class="w-100  d-md-none filter-button text-center">
+            <div>
+                <button type="button" class="btn btn-secondary" onclick="eventFilterTest()">Фильтр</button>
+            </div>
+
+        </div>
+        <div class="row ">
+            <div class="col-12  col-md-8 card w-100 mt-3 p-2">
+                <div class=""><h1>Каталог Манги</h1></div>
+
+                <form>
+                    <div class="form-group">
+                        <input class="form-control"
+                               placeholder="Поиск по названию..." name="name">
+                    </div>
+
+                </form>
+                <div class="flex-container row align-items-start justify-content-center flex-wrap">
+                    {% for item in manga_list %}
+                        <article class="flex-item card mx-1 mx-md-2 mb-3 shadow-sm rounded">
+                            <a href="{{ item.get_absolute_urls }}" title="" class="">
+                                <img src="/media/{{ item.poster }}" class="img-fluid card-img-top"
+                                     alt="...">
+                            </a>
+                            <div class="post-description">
+                                <a href="{{ item.get_absolute_urls }}" class="card-about stretched-link"
+                                   style=" text-decoration: none;"><p
+                                        class="card-title js-card-title">{{ item.title }}</p>
+                                    <ul class="card-genres m-0 p-0">
+                                        {% for genry in item.genres.all %}
+                                            <li class="card-genres-item">{{ genry.name }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    <ul class=" row card-numbers m-0 p-0">
+                                        <li class="card-numbers-item">
+                                            <span>Глава: 88</span>
+                                        </li>
+                                        <li class="card-numbers-item">
+                                            <span class="js-card-year">Год: {{ item.year }}</span>
+                                        </li>
+                                        <li class="card-numbers-item"><span class="fa fa-star rating-star"><span
+                                                class="font-weight: 900;s">☆</span> {{ item.reyting }}</span>
+                                        </li>
+                                    </ul>
+                                    <p class=" mt-2 card-text"
+                                       style="text-overflow: ellipsis;line-height: 21px;font-size: 13px;height: 100px; color: #bbc2c4;  ">
+                                        {{ item.description }}
+                                    </p>
+                                </a>
+                            </div>
+                            <div class="w-100 text-center test"> {{ item.title }}</div>
+                            <ul class="post-footer list-group list-group-flush">
+                                <li class="list-group-item px-1 py-1 small text-center">
+                                    <span class="far fa-clock"></span>
+                                    Глава
+                                    <a href="/manga/the-beginning-after-the-end/chapter/3-29" title="Предвкушение"
+                                       style="color: #ff4800;">
+                                        3 - 29
+                                    </a>
+                                    <span>5 д. назад</span>
+                                </li>
+                            </ul>
+                        </article>
+                    {% endfor %}
+
+
+                </div>
+            </div>
+            <div class=" test2 col card mt-3" style="height: auto" id="test2">
+                <div class="text-center"><h1></h1></div>
+                <form action="{% url "catalog" %}" class="input-group" method="get">
+                    <div class="">
+                        <div class="row dropdown notclose" id="genres-filter">
+                            <button class="col btn btn-secondary dropdown-toggle w-100 m-2" data-toggle="dropdown"
+                                    type="button"
+                                    id="dropdownMenuButton1"
+                                    data-bs-toggle="dropdown" aria-expanded="false" onclick="">
+                                Жанры
+                            </button>
+                            <button type="button" class="close d-md-none col-1" aria-label="Close"
+                                    onclick="eventFilterTest()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                            <ul class="dropdown-menu w-100" style="" aria-labelledby="dropdownMenuButton1">
+                                <div class="m-1"><input type="text" class="form-control" autocomplete="off"
+                                                        role="textbox" aria-label="Search"></div>
+                                <div class="bs-actionsbox">
+                                    <div class="btn-group btn-group-sm btn-block">
+                                        <label class="actions-btn bs-select-all btn btn-light"
+                                               onclick="eventCheckBoxGenres(true)">Выбрать
+                                            все</label>
+                                        <label class="actions-btn bs-select-all btn btn-light"
+                                               onclick="eventCheckBoxGenres(false)">Отменить
+                                            все</label>
+                                    </div>
+                                </div>
+                                {% for genres in view.get_genres %}
+                                    <li class="selected"><label class="w-100"><a role="option"
+                                                                                 class="dropdown-item selected w-100"
+                                                                                 aria-disabled="false"
+                                                                                 tabindex="0"
+                                                                                 aria-selected="true">
+                                        {{ genres.name }} <input class="mt-1" style="float:right;" type="checkbox"
+                                                                 checked name="genres" value="{{ genres.id }}">
+                                    </a>
+                                    </label>
+
+                                    </li>
+
+
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div id="filter">
+                            <div class="row p-2 m-0 mb-2">
+                                <div class="col-12">
+                                    <b>Типы</b>
+                                </div>
+
+                                {% for type in  view.get_type %}
+                                    <div class="col-6 form-check">
+
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" name="type"
+                                                   value="{{ type.id }}">
+                                            {{ type.name }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="row p-2 m-0 mb-2">
+                                <div class="col-12"><b>Статус перевода</b></div>
+                                <div class="col-6 form-check" style="">
+                                    <label class="form-check-label  m-1"><input class="form-check-input"
+                                                                                name="transfer_status"
+                                                                                type="checkbox" value="0">
+                                        Продолжается</label>
+                                </div>
+                                <div class="col-6 form-check" style="">
+                                    <label class="form-check-label  m-1"> <input class="form-check-input"
+                                                                                 type="checkbox"
+                                                                                 name="transfer_status"
+                                                                                 value="1">Завершен</label>
+                                </div>
+                                <div class="col-6 form-check">
+
+                                    <label class="form-check-label m-1"> <input class="form-check-input"
+                                                                                type="checkbox"
+                                                                                name="transfer_status"
+                                                                                value="2"> Замарожен</label>
+                                </div>
+                                <div class="coд-6 form-check">
+
+                                    <label class="form-check-label m-1"> <input class="form-check-input"
+                                                                                type="checkbox"
+                                                                                name="transfer_status"
+                                                                                value="3"> Заброшен</label>
+                                </div>
+
+
+                            </div>
+                            <div class="row p-2 m-0 mb-2">
+                                <div class="col-12"><b>Статус тайтла</b></div>
+                                <div class="col -6 form-check">
+
+                                    <label class="form-check-label  m-1" for="check-1"><input class="form-check-input"
+                                                                                              type="checkbox"
+                                                                                              name='title_status'
+                                                                                              value="0"
+                                                                                              id="check-1">Онгоинг</label>
+                                </div>
+                                <div class="col-6 form-check">
+
+                                    <label class="form-check-label  m-1"> <input class="form-check-input"
+                                                                                 type="checkbox" name="title_status"
+                                                                                 value="1">Продолжается</label>
+                                </div>
+                                <div class="col-6 form-check">
+
+                                    <label class="form-check-label m-1"><input class="form-check-input" type="checkbox"
+                                                                               name="title_status" value="2">
+                                        Анонс</label>
+                                </div>
+                                <div class="col-6 form-check">
+
+                                    <label class="form-check-label m-1"> <input class="form-check-input" type="checkbox"
+                                                                                name="title_status" value="3">
+                                        Приостановлен</label>
+                                </div>
+                                <div class="col-6 form-check">
+
+                                    <label class="form-check-label m-1"> <input class="form-check-input" type="checkbox"
+                                                                                id="option1" name="title_status"
+                                                                                value="4"> Выпуск завершен</label>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-secondary" onclick="eventCheckBox()">Сбросить
+                                </button>
+                                <button type="submit" class="btn btn-primary">Применить</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('.dropdown ul, .dropdown-menu label').click(function (e) {
+            e.stopPropagation();
+        });
+    </script>
+    <script type="text/javascript">
+        function eventCheckBox() {
+            let checkboxs = document.getElementById("filter").getElementsByTagName("input");
+            for (let i = 0; i < checkboxs.length; i++) {
+                checkboxs[i].checked = false;
+
+            }
+            checkboxs = document.getElementById("genres-filter").getElementsByTagName("input");
+            for (let i = 0; i < checkboxs.length; i++) {
+                checkboxs[i].checked = true;
+
+            }
+        }</script>
+    <script type="text/javascript">
+        function eventCheckBoxGenres(flag) {
+            let checkboxs = document.getElementById("genres-filter").getElementsByTagName("input");
+            for (let i = 1; i < checkboxs.length; i++) {
+                checkboxs[i].checked = flag !== false;
+
+
+            }
+        }</script>
+    <script type="text/javascript">
+        function eventFilterTest() {
+            document.getElementById('test2').classList.toggle('article')
+
+
+        }</script>
+{% endblock %}
