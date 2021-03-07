@@ -72,10 +72,9 @@ class MangaDetailView(DetailView):
     """Описание  манги"""
     model = Manga
     template_name = 'manga.html'
-    slug_field = 'slug'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data( **kwargs)
+        context = super().get_context_data(**kwargs)
         context['toms'] = self.object.tome_set.all()
         return context
 
@@ -85,27 +84,26 @@ class ChapterView(DetailView):
     """Чтение манги"""
     model = Manga
     template_name = 'chapters.html'
-    slug_field = 'slug'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data( **kwargs)
-        tome = self.object.tome_set.filter(number=kwargs["pk"])[0]
+        context= super().get_context_data(**kwargs)
+        tome = self.object.tome_set.filter(number=kwargs["pk_1"])[0]
         context['tome'] = tome
         chapter = tome.chapter_set.filter(number=kwargs["pk_2"])[0]
         context['chapter'] = chapter
-        context['image'] = chapter.chapterimage_set.filter(number=kwargs["pk_3"])[0]
+        context['image'] = chapter.chapterimage_set.get(number=kwargs["pk_3"])
         return context
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object, **kwargs)
-        return self.render_to_response(context)
+        response = self.render_to_response(context)  
+        return response
 
 
 class DataDetalView(DetailView):
     """Вывод информации"""
     template_name = 'author.html'
-    slug_field = 'slug'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)

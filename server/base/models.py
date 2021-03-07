@@ -159,7 +159,7 @@ class Tome(models.Model):
     number = models.IntegerField('Номер')
 
     def __str__(self):
-        return self.number
+        return f'Том {self.number}'
 
     class Meta:
         verbose_name = 'Том'
@@ -173,7 +173,7 @@ class Chapter(models.Model):
     number = models.IntegerField('Номер')
 
     def __str__(self):
-        return f" {self.number} - {self.tom}"
+        return f" {self.tom} - {self.number}"
 
     def get_absolute_urls(self):
         return reverse('manga', kwargs={'slug': self.number})
@@ -190,7 +190,7 @@ class ChapterImage(models.Model):
     image = models.ImageField('Изображение')
 
     def __str__(self):
-        return f"{self.number}-{self.chapter}"
+        return f"{self.chapter}-{self.number}"
 
     class Meta:
         verbose_name = 'Страница'
