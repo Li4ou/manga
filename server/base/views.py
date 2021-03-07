@@ -29,7 +29,6 @@ class Data:
         return TypeManga.objects.all()
 
 
-
 class FilterManga(Data, ListView):
     template_name = 'catalog.html'
 
@@ -57,9 +56,9 @@ class MainTemplateView(TemplateView):
 
     template_name = 'main.html'
 
-    def get_context_data(self, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         now = datetime.datetime.now()
-        context = super(MainTemplateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['manga_top'] = Manga.objects.all().order_by("rating")[:20]
         context['manga_hot'] = Manga.objects.prefetch_related('genres').filter(
             data__range=[now - datetime.timedelta(7), now])[:20]
@@ -75,6 +74,11 @@ class MangaDetailView(DetailView):
     template_name = 'manga.html'
     slug_field = 'slug'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data( **kwargs)
+        context['toms'] = self.object.tome_set.all()
+        return context
+
 
 # @method_decorator(cache_page(CACHE_TTL), name='get')
 class ChapterView(DetailView):
@@ -84,11 +88,9 @@ class ChapterView(DetailView):
     slug_field = 'slug'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data( **kwargs)
         tome = self.object.tome_set.filter(number=kwargs["pk"])[0]
         context['tome'] = tome
-
-        context['manga'] = self.object
         chapter = tome.chapter_set.filter(number=kwargs["pk_2"])[0]
         context['chapter'] = chapter
         context['image'] = chapter.chapterimage_set.filter(number=kwargs["pk_3"])[0]

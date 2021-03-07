@@ -1,5 +1,7 @@
 from django.db import models
+from django.db.models import signals
 from django.shortcuts import reverse
+from django.dispatch import receiver
 
 
 class Category(models.Model):
@@ -74,6 +76,7 @@ class Publisher(models.Model):
 
 class Genres(models.Model):
     """Жанры"""
+    id = models.AutoField(primary_key=True)
     objects = models.Manager()
     name = models.CharField('Имя', max_length=255)
     description = models.TextField("Описание")
@@ -86,6 +89,8 @@ class Genres(models.Model):
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
 
+    def get_absolute_urls(self):
+        return f'/catalog?genres={self.id}'
 
 class TypeManga(models.Model):
     """Типы"""
@@ -99,6 +104,9 @@ class TypeManga(models.Model):
     class Meta:
         verbose_name = 'Тип'
         verbose_name_plural = 'Типы'
+
+    def get_absolute_urls(self):
+        return f'/catalog?type={self.id}'
 
 
 class Manga(models.Model):
@@ -117,6 +125,7 @@ class Manga(models.Model):
         ('2', 'Замарожен'),
         ('3', 'Заброшен'),
     )
+    chapter_number = models.IntegerField("Число глав", default=0 )
     title = models.CharField('Название', max_length=250)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     description = models.TextField('Описание')
@@ -131,7 +140,6 @@ class Manga(models.Model):
     transfer_status = models.CharField(max_length=10, choices=TRANSFER_STATUS, default='1')
 
     title_status = models.CharField(max_length=10, choices=TRANSFER_STATUS, default='0')
-
     def get_absolute_urls(self):
         return reverse('manga', kwargs={'slug': self.slug})
 
@@ -214,3 +222,8 @@ class Rating(models.Model):
     class Meta:
         verbose_name = 'Рейтинг'
         verbose_name_plural = 'Рейтинг'
+
+
+@receiver(signals.post_save, sender=Chapter)
+def create_customer(sender, instance,  **kwargs):
+    instance.tom.manga.chapter_number +=1

@@ -23,31 +23,34 @@
                         </div>
                         <div class="col-md-7 col-lg-7">
                             <div style="margin-top: 10px; margin-left: 20px">
-                                <div><b>Тип:</b> {{ manga.type_manga }}</div>
+                                <div><b>Тип:</b><a href="{{ manga.type_manga.get_absolute_urls }}"> {{ manga.type_manga }}</a></div>
 
                                 <div><b>Автор:</b>
                                     {% for author in manga.author.all %}
-                                        <a href="{{author.get_absolute_urls }}">{{ author.name}}</a>
+                                        <a href="{{ author.get_absolute_urls }}">{{ author.name }}</a>
 
                                     {% endfor %}
                                 </div>
                                 <div><b>Художник: </b>
                                     {% for painter in manga.painter.all %}
-                                        <a href="{{ painter.get_absolute_urls }}">{{ painter.name}}</a>
+                                        <a href="{{ painter.get_absolute_urls }}">{{ painter.name }}</a>
 
                                     {% endfor %}
                                 </div>
                                 <div><b>Издатель:</b>
                                     {% for publisher in manga.publisher.all %}
-                                        <a href="{{ publisher.get_absolute_urls }}">{{ publisher.name}}</a>
+                                        <a href="{{ publisher.get_absolute_urls }}">{{ publisher.name }}</a>
 
                                     {% endfor %}
-                                    </div>
-                                <div><b>Загружено глав:</b> 144</div>
-                                <div><b>Статус:</b></div>
+                                </div>
+                                <div><b>Загружено глав:</b> {{ manga.chapter_number }}</div>
+                                <div><b>Статус:</b><a
+                                        href='/catalog?transfer_status={{ manga.transfer_status }}'> {{ manga.get_title_status_display }}</a>
+                                </div>
+                                </a>
                                 <div><b>Жанр:</b>
                                     {% for genres in manga.genres.all %}
-                                        {{ genres.name}}
+                                        <a href="{{ genres.get_absolute_urls }}">{{ genres.name }}</a>
                                     {% endfor %}
 
                                 </div>
@@ -56,7 +59,8 @@
                         </div>
                     </div>
                     <div class="btn-group" role="group" aria-label="Basic example" style="padding: 10px;  ">
-                        <button type="button" class="btn btn-primary " style=" min-height:50px">Начать читать</button>
+                        <a href="chapter/1-1/1" type="button" class="btn btn-primary " style=" min-height:50px">Начать
+                            читать</a>
                         <button type="button" class="btn btn-primary">Читать последнюю главу</button>
                     </div>
                     <div style="padding: 20px">
@@ -67,24 +71,26 @@
             </div>
             <div class="col-xl-4 p-0">
                 <div class="card">
-                    <div>
-                        В разработке
-                    </div>
+{#                    <div>#}
+{#                        В разработке#}
+{#                    </div>#}
                 </div>
             </div>
             <div class=" card col-xl-8 p-0 mt-2">
-                <div class="p-2">Главы</div>
+                <div class="p-2"><b>Главы</b></div>
 
                 <ul class="list-group list-group-flush">
-                    {% for chapter in chapters %}
-                        <li href="" type="" class="list-group-item font-weight-bold">Том 1
+                    {% for tom in toms%}
+                        {%  for chapter in tom.chapter_set.all%}
+                            <a href="chapter/{{ tom.number }}-{{ chapter.number }}/1">
+                        <li href="" type="" class="list-group-item font-weight-bold">Том {{ tom.number }}
                             Глава {{ chapter.number }}</li>
+                            {% endfor %}
+                            </a>
                     {% endfor %}
                 </ul>
             </div>
         </div>
-        {#        <div style="height: 250px">Реклама</div>#}
-        {#    <div class="card col-xl-8">Комментарии (44)</div>#}
 
         {## TODO: нужно подумать как  лучше передавать id#}
         <script>

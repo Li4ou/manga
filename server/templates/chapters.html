@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 
 {% block chapter %}
-<div class="container-fluid">
-    <div class="text-center" style="margin-top: 75px; padding: 5px"><span class="font-weight-bold"> <a
-            href="/">{{ manga.title }}</a> Том {{ tome.number }} Глава {{ chapter.number }} </span></div>
-    <div class="container" style="max-width: 760px; padding: 0">
-        <nav class="navbar  justify-content-center mb-1">
-            <div class="chapterSelectorLoader" data-name="chapterSelector"
-                 data-src="/manga/record-of-wortenia-war/chapterSelector/56901"></div>
-            <ul class="navbar-nav w-100 chapterSelector" style="">
-                <li class="nav-item"></li>                  <div class="row">
+    <div class="container-fluid">
+        <div class="text-center" style="margin-top: 75px; padding: 5px"><span class="font-weight-bold"> <a
+                href="{{ manga.get_absolute_urls }}">{{ manga.title }}</a> Том {{ tome.number }} Глава {{ chapter.number }} </span>
+        </div>
+        <div class="container" style="max-width: 760px; padding: 0">
+            <nav class="navbar  justify-content-center mb-1">
+                <div class="chapterSelectorLoader" data-name="chapterSelector"
+                     data-src="/manga/record-of-wortenia-war/chapterSelector/56901"></div>
+                <ul class="navbar-nav w-100 chapterSelector" style="">
+                    <li class="nav-item"></li>
+                    <div class="row">
                         <div class="col-md-6 mb-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -41,7 +43,7 @@
                             <div class="input-group">
 
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text" >Глава</div>
+                                    <div class="input-group-text">Глава</div>
                                 </div>
                                 <select id="item-select" class="form-control"
                                         aria-label="Chapter select" aria-describedby="chapter-select-input">
@@ -69,77 +71,78 @@
                             </div>
                         </div>
                     </div>
-                </li>
-            </ul>
-        </nav>
-    </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
-    <div class="mt-1 d-flex flex-column align-items-center chapter-images" style="width: auto">
+        <div class="mt-1 d-flex flex-column align-items-center chapter-images" style="width: auto">
             <img class="img-fluid " src="/media/{{ image.image }}">
-    </div>
-    <div class="container" style="max-width: 760px; padding: 0">
-        <nav class="navbar navbar-dark   justify-content-center mb-1 blue">
-            <div class="chapterSelectorLoader" data-name="chapterSelector"
-                 data-src="/manga/record-of-wortenia-war/chapterSelector/56901"></div>
-            <ul class="navbar-nav w-100 chapterSelector" style="">
-                <li class="nav-item">
-                    <div class="row">
-                        <div class="col-md-6 mb-1">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <button class="page-control input-group-text blue btn btn-dark px-3"
-                                            id="page-select-prev">
-                                        <i class="fas fa-angle-left"> < </i>
-                                    </button>
-                                </div>
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text blue  px-2" style="color: white"
-                                         id="page-select-input">Страница
+        </div>
+        <div class="container" style="max-width: 760px; padding: 0">
+            <nav class="navbar navbar-dark   justify-content-center mb-1 blue">
+                <div class="chapterSelectorLoader" data-name="chapterSelector"
+                     data-src="/manga/record-of-wortenia-war/chapterSelector/56901"></div>
+                <ul class="navbar-nav w-100 chapterSelector" style="">
+                    <li class="nav-item">
+                        <div class="row">
+                            <div class="col-md-6 mb-1">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button class="page-control input-group-text blue btn btn-dark px-3"
+                                                id="page-select-prev">
+                                            <i class="fas fa-angle-left"> < </i>
+                                        </button>
+                                    </div>
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text blue  px-2" style="color: white"
+                                             id="page-select-input">Страница
+                                        </div>
+                                    </div>
+                                    <select id="page-select" class="form-control blue text-light "
+                                            aria-label="Page select" aria-describedby="page-select-input">
+                                        {% for item in chapter.chapterimage_set.all %}
+                                            <option value="1">
+                                                1 / 1
+                                            </option>
+                                        {% endfor %}
+
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="page-control input-group-text blue btn btn-dark px-3"
+                                                id="page-select-next">
+                                            <i class="fas fa-angle-right">></i>
+                                            <i class="fas fa-angle-right">></i>
+                                        </button>
                                     </div>
                                 </div>
-                                <select id="page-select" class="form-control blue text-light "
-                                        aria-label="Page select" aria-describedby="page-select-input">
-                                    {% for item in chapter.chapterimage_set.all %}
-                                    <option value="1">
-                                        1 / 1
-                                    </option>
-                                    {% endfor %}
-
-                                </select>
-                                <div class="input-group-append">
-                                    <button class="page-control input-group-text blue btn btn-dark px-3"
-                                            id="page-select-next">
-                                        <i class="fas fa-angle-right">></i>
-                                        <i class="fas fa-angle-right">></i>
-                                    </button>
-                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="input-group">
+                            <div class="col-md-6">
+                                <div class="input-group">
 
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text" id="chapter-select-input">Глава</div>
-                                </div>
-                                <select id="item-select" class="form-control " style="background-color: rgb(69, 130, 175);">
-                                    {%  for tome in manga.tome_set.all %}
-                                    <optgroup label="Том {{ tome.number }}">
-                                        {% for chapter in  tome.chapter_set.all %}
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text" id="chapter-select-input">Глава</div>
+                                    </div>
+                                    <select id="item-select" class="form-control "
+                                            style="background-color: rgb(69, 130, 175);">
+                                        {% for tome in manga.tome_set.all %}
+                                            <optgroup label="Том {{ tome.number }}">
+                                                {% for chapter in  tome.chapter_set.all %}
 
-                                        <option value="/manga/record-of-wortenia-war/chapter/7-33">
-                                            {{ chapter.number }}
+                                                    <option value="/manga/record-of-wortenia-war/chapter/7-33">
+                                                    {{ chapter.number }}
+                                                {% endfor %}
+                                            </optgroup>
                                         {% endfor %}
-                                    </optgroup>
-                                    {% endfor %}
-                                </select>
+                                    </select>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-    </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
-</div>
+    </div>
 {% endblock %}
