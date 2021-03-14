@@ -76,7 +76,6 @@ class Publisher(models.Model):
 
 class Genres(models.Model):
     """Жанры"""
-    id = models.AutoField(primary_key=True)
     objects = models.Manager()
     name = models.CharField('Имя', max_length=255)
     description = models.TextField("Описание")
@@ -91,6 +90,7 @@ class Genres(models.Model):
 
     def get_absolute_urls(self):
         return f'/catalog?genres={self.id}'
+
 
 class TypeManga(models.Model):
     """Типы"""
@@ -109,23 +109,42 @@ class TypeManga(models.Model):
         return f'/catalog?type={self.id}'
 
 
+class TransferStatus(models.Model):
+    """Статус перевода"""
+    name = models.CharField('Название', max_length=250)
+    description = models.TextField('Описание')
+
+    class Meta:
+        verbose_name = 'Статус перевода'
+        verbose_name_plural = 'Статусы перевода'
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_urls(self):
+        return f'/catalog?transfer_status={self.id}'
+
+
+class TitleStatus(models.Model):
+    """Статусс тайтла"""
+    name = models.CharField('Название', max_length=250)
+    description = models.TextField('Описание')
+
+    class Meta:
+        verbose_name = 'Статус тайтла'
+        verbose_name_plural = 'Статусы тайтла'
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_urls(self):
+        return f'/catalog?title_status={self.id}'
+
+
 class Manga(models.Model):
     """Манга"""
     objects = models.Manager()
-    TITLE_STATUS = (
-        ('0', 'Онгоинг'),
-        ('1', 'Продолжаеться'),
-        ('2', 'Анонс'),
-        ('3', 'Приастановлен'),
-        ('4', 'Выпуск завершен'),
-    )
-    TRANSFER_STATUS = (
-        ('0', 'Продолжаеться'),
-        ('1', 'Завершен'),
-        ('2', 'Замарожен'),
-        ('3', 'Заброшен'),
-    )
-    chapter_number = models.IntegerField("Число глав", default=0 )
+    chapter_number = models.IntegerField("Число глав", default=0)
     title = models.CharField('Название', max_length=250)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     description = models.TextField('Описание')
@@ -137,9 +156,10 @@ class Manga(models.Model):
     year = models.PositiveSmallIntegerField('Дата выхода', default=0)
     data = models.DateTimeField('Дата добавления', auto_now=True)
     type_manga = models.ForeignKey(TypeManga, on_delete=models.CASCADE, verbose_name='Тип')
-    transfer_status = models.CharField(max_length=10, choices=TRANSFER_STATUS, default='1')
+    transfer_status = models.ForeignKey(TransferStatus, on_delete=models.CASCADE, verbose_name='Статус перевода',
+                                        default=1)
+    title_status = models.ForeignKey(TitleStatus, on_delete=models.CASCADE, verbose_name='Статус тайтла', default=1)
 
-    title_status = models.CharField(max_length=10, choices=TRANSFER_STATUS, default='0')
     def get_absolute_urls(self):
         return reverse('manga', kwargs={'slug': self.slug})
 
@@ -225,5 +245,5 @@ class Rating(models.Model):
 
 
 @receiver(signals.post_save, sender=Chapter)
-def create_customer(sender, instance,  **kwargs):
-    instance.tom.manga.chapter_number +=1
+def create_customer(sender, instance, **kwargs):
+    instance.tom.manga.chapter_number += 1
