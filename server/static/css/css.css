@@ -170,3 +170,9 @@ element.style {
     background-color: rgb(69, 130, 175);
 }
 
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .25rem;
+}
