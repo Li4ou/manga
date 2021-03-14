@@ -41,6 +41,7 @@ class Data:
 
 
 class FilterManga(Data, ListView):
+    """СТраница каталога"""
     model = Manga
     template_name = 'catalog.html'
     paginate_by = 30
@@ -60,18 +61,17 @@ class FilterManga(Data, ListView):
         return queryset
 
     def get_context_data(self, **kwargs):
-        get_dict = self.request.GET
         urls = str()
-        test = dict()
-        if get_dict:
-            for key in get_dict:
+        filter_parameters = dict()
+        if self.request.GET:
+            for key in self.request.GET:
                 if key != 'page':
-                    test[key] = [int(item) for item in get_dict.getlist(key)]
-                    for value in get_dict.getlist(key):
+                    filter_parameters[key] = [int(item) for item in self.request.GET.getlist(key)]
+                    for value in self.request.GET.getlist(key):
                         urls += f"{key}={value}&"
 
         context = {'urls': urls,
-                   'test': test}
+                   'filter_parameters': filter_parameters}
 
         return super().get_context_data(**context)
 

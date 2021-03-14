@@ -139,22 +139,50 @@
                                             все</label>
                                     </div>
                                 </div>
-                                {% for genres in view.get_genres %}
-                                    <li class="selected">
-                                        <label class="w-100"><a role="option"
-                                                                class="dropdown-item selected w-100"
-                                                                aria-disabled="false"
-                                                                tabindex="0"
-                                                                aria-selected="true">
-                                            {{ genres.name }} <input class="mt-1" style="float:right;" type="checkbox"
-                                                                     checked name="genres" value="{{ genres.id }}">
-                                        </a>
-                                        </label>
+                                {% if filter_parameters.genres %}
+                                    {% for genres in view.get_genres %}
+                                        <li class="selected">
+                                            <label class="w-100"><a role="option"
+                                                                    class="dropdown-item selected w-100"
+                                                                    aria-disabled="false"
+                                                                    tabindex="0"
+                                                                    aria-selected="true">
+                                                {{ genres.name }}
+                                                {% if  genres.id in  filter_parameters.genres %}
+                                                    <input class="mt-1" style="float:right;"
+                                                           type="checkbox"
+                                                           checked name="genres" value="{{ genres.id }}">
+                                                {% else %}
+                                                    <input class="mt-1" style="float:right;"
+                                                           type="checkbox"
+                                                           name="genres" value="{{ genres.id }}">
 
-                                    </li>
+                                                {% endif %}
+                                            </a>
+                                            </label>
+
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                     {% for genres in view.get_genres %}
+                                        <li class="selected">
+                                            <label class="w-100"><a role="option"
+                                                                    class="dropdown-item selected w-100"
+                                                                    aria-disabled="false"
+                                                                    tabindex="0"
+                                                                    aria-selected="true">
+                                                {{ genres.name }}
+                                                    <input class="mt-1" style="float:right;"
+                                                           type="checkbox"
+                                                                 name="genres" value="{{ genres.id }}">
+                                            </a>
+                                            </label>
+
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
 
 
-                                {% endfor %}
                             </ul>
                         </div>
 
@@ -168,7 +196,7 @@
                                     <div class="col-6 form-check">
 
                                         <label class="form-check-label">
-                                            {% if type.id in test.type %}
+                                            {% if type.id in filter_parameters.type %}
                                                 <input class="form-check-input" type="checkbox" name="type"
                                                        value="{{ type.id }}" checked>
 
@@ -187,7 +215,7 @@
                                 {% for status in view.get_transfer_status %}
                                     <div class="col-6 form-check" style="">
                                         <label class="form-check-label  m-1">
-                                            {% if status.id  in test.transfer_status %}
+                                            {% if status.id  in filter_parameters.transfer_status %}
                                                 <input class="form-check-input"
                                                        name="transfer_status"
                                                        type="checkbox"
@@ -210,21 +238,21 @@
                                 <div class="col-12"><b>Статус тайтла</b></div>
                                 {% for status in view.get_title_status %}
                                     <div class="col -6 form-check">
-                                    
 
-                                        <label class="form-check-label  m-1" >
-                                            {% if status.id in test.title_status %}
+
+                                        <label class="form-check-label  m-1">
+                                            {% if status.id in filter_parameters.title_status %}
                                                 <input class="form-check-input"
                                                        type="checkbox"
                                                        name='title_status'
                                                        value="{{ status.id }}"
-                                                        checked>
+                                                       checked>
                                             {% else %}
                                                 <input class="form-check-input"
                                                        type="checkbox"
                                                        name='title_status'
                                                        value="{{ status.id }}"
-                                                       >
+                                                >
                                             {% endif %}{{ status.name }}</label>
                                     </div>
                                 {% endfor %}
