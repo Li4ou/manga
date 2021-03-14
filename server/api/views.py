@@ -19,7 +19,7 @@ class MangaViewSet(viewsets.ViewSet):
    return {
             "id":{
                  "id": ,
-                 "name_ru":  ,
+                 "title":  ,
                  "type": ,
                  "image": ,
                  }
@@ -28,7 +28,7 @@ class MangaViewSet(viewsets.ViewSet):
     queryset = Manga.objects.all()
     serializer_class = MangaSerializer
 
-    def list(self, *args) -> dict():
+    def list(self, *args):
         query_params = self.request.query_params
         ids = query_params['id'].split(',')
         queryset = Manga.objects.filter(id__in=ids)

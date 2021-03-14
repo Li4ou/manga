@@ -31,10 +31,10 @@ function showMessage() {
                         '                                    <div class="hot-media-item media-card-wrap media-card-wrap_sm m-1 "\n' +
                         '                                         style="width: 150px">\n' +
                         '                                        <a href="" title="" class="">\n' +
-                        '                                            <img src="' + result[item].image + '" class=""\n' +
+                        '                                            <img src="' + result[item].poster + '" class=""\n' +
                         '                                                 style="height: 200px"\n' +
                         '                                                 alt="...">\n' +
-                        '                                            <div class="w-100 text-center test">' + result[item].name_ru + '\n' +
+                        '                                            <div class="w-100 text-center test">' + result[item].title + '\n' +
                         '                                            </div>\n' +
                         '                                        </a>\n'
                     );

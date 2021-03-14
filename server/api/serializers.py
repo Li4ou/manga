@@ -10,7 +10,7 @@ from base.models import Manga
 class MangaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Manga
-        fields = ['id', 'name_ru', 'type', "image"]
+        fields = ['id', 'title', 'type_manga', "poster"]
 
     def to_representation(self, instance):
         """Convert `username` to lowercase."""
