@@ -29,21 +29,23 @@ class PaniterAdmin(SlugMixin, admin.ModelAdmin): pass
 
 
 @admin.register(Tome)
-class PaniterAdmin(TitleMixin,admin.ModelAdmin):pass
+class PaniterAdmin(TitleMixin, admin.ModelAdmin): pass
 
 
 @admin.register(Chapter)
-class ChapterAdmin(TitleMixin,admin.ModelAdmin):
+class ChapterAdmin(TitleMixin, admin.ModelAdmin):
     def get_title_manga(self, obj):
         return obj.tom.manga
 
+
 @admin.register(ChapterImage)
-class ChapterAdmin(TitleMixin,admin.ModelAdmin):
+class ChapterAdmin(TitleMixin, admin.ModelAdmin):
     def get_title_manga(self, obj):
         return obj.chapter.tom.manga
 
 
-
+admin.site.register(TitleStatus)
+admin.site.register(TransferStatus)
 admin.site.register(TypeManga)
 admin.site.register(Category)
 admin.site.register(Genres)
